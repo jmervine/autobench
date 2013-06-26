@@ -1,0 +1,5 @@
+class Autobench::YSlow
+
+end
+
+
