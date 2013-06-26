@@ -11,8 +11,8 @@ end
 
 class TestAutobenchRender < Minitest::Test
   def setup
-    @abrender ||= Autobench::Render.new(Autobench::Config.new("./config/config.yml"))
-    @options  ||= { "httperf" => "./tests/support/httperf" }
+    @options  ||= { "httperf" => File.join(File.dirname(__FILE__), "support/httperf") }
+    @abrender ||= Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options))
   end
 
   def test_initialize

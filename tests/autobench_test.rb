@@ -22,7 +22,9 @@ class TestAutobench < Minitest::Test
   end
 
   def test_render
-    ab = Autobench.new("./config/config.yml", { "server" => "localhost", "port" => 4567 })
+    ab = Autobench.new("./config/config.yml", {
+      "server" => "localhost", "port" => 4567,
+      "httperf" => File.join(File.dirname(__FILE__), "support/httperf") })
     assert ab.render.benchmark
     assert ab.render.passed?
   end
