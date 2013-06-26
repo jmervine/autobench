@@ -3,6 +3,7 @@ class Autobench::Render
   attr_accessor :full_results
 
   def initialize config
+    @httperf        = config.delete("httperf") || nil
     @config         = config
     @httperf_config = httperf_config
 
@@ -14,7 +15,7 @@ class Autobench::Render
   end
 
   def benchmark
-    httperf       = HTTPerf.new(@httperf_config)
+    httperf       = HTTPerf.new(@httperf_config, @httperf)
     httperf.parse = true
     @full_results = httperf.run
 

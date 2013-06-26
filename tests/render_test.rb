@@ -12,11 +12,12 @@ end
 class TestAutobenchRender < Minitest::Test
   def setup
     @abrender ||= Autobench::Render.new(Autobench::Config.new("./config/config.yml"))
+    @options  ||= { "httperf" => "./tests/support/httperf" }
   end
 
   def test_initialize
-    assert Autobench::Render.new(Autobench::Config.new("./config/config.yml"))
-    assert Autobench::Render.new(Autobench::Config.new("./config/config.yml")).instance_variable_get(:@config)
+    assert Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options))
+    assert Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options)).instance_variable_get(:@config)
   end
 
   def test_benchmark
