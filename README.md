@@ -1,6 +1,11 @@
 # autobench
 
-> NOTE: This is still very much under development.
+> NOTE: This is still very much under development and I've written the README to define how I plan for it to work.
+>
+> TODOs:
+>
+> * Implement `client` functionality.
+> * Build and release gem.
 
 ### Installation
 
