@@ -1,5 +1,7 @@
 # autobench
 
+> NOTE: This is still very much under development.
+
 ### Installation
 
     gem install autobench
@@ -25,22 +27,27 @@
         end
 
         def test_autobench_render
-            results = @autobench.render
+            results = @autobench.render.benchmark
             assert results["connection_time_median"] < 500 # ms
 
             # or...
-            results = @autobench.render
-            assert results.passed?
+            assert @autobench.render.passed?
         end
 
         def test_autobench_yslow
-            results = @autobench.yslow
-            assert results.overall >= 95 # score
+            results = @autobench.yslow.benchmark
+            assert results["overall"] >= 95 # score
+
+            # or...
+            assert @autobench.yslow.passed?
         end
 
         def test_autobench_client
-            results = @autobench.client
-            assert results.median < 500 # ms
+            results = @autobench.client.benchmark
+            assert results["load_key"] < 500 # ms
+
+            # or...
+            assert @autobench.client.passed?
         end
     end
 

@@ -9,6 +9,18 @@ class Autobench
   def initialize config, overides={}
     @config = Autobench::Config.new(config, overides)
   end
+
+  def render
+    @render ||= Autobench::Render.new(@config)
+  end
+
+  def yslow
+    @yslow  ||= Autobench::YSlow.new(@config)
+  end
+
+  def client
+    @client ||= "unimplemented"
+  end
 end
 
 # vim: ft=ruby:

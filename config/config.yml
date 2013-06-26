@@ -8,6 +8,12 @@ render:
   # supports all HTTPerf.rb configurations, see:
   #   http://mervine.net/gems/httperfrb
 
+#yslow: # supported shown
+  # ruleset: ydefault
+  # ua: "<ua string>"
+  # headers: '{ "foo": "bar" }' #
+  # viewport: "WxH"
+
 thresholds:
 
   render:
@@ -25,7 +31,21 @@ thresholds:
   #client:
     #<mesaurement>: 500 # ms
 
-  #yslow:
-    #overall: 90 # score
+  yslow:
+    overall:  60
+    loadtime: 2500
+    requests: 135
+    size:     1650000
+
+
+################################################################################
+# MISC CONFIGS -- Can mostly be ignored.
+################################################################################
+
+# Path to yslow.js, incase you want to change the version.
+yslow_js: "./lib/yslow.js"
+
+#phantomjs: "/path/to/phantomjs"
+# by default uses PATH
 
 # vim: ft=yaml:

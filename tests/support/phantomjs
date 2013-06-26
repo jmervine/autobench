@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# phantomjs yslow.js stub
+echo '{"w": 1601882, "o": 64, "u": "http%3A%2F%2Fmervine.net%2F", "r": 132, "i": "ydefault", "lt": 2467}
+'
+exit 0
+
+# vim: ft=sh:

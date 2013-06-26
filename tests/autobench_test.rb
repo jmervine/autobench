@@ -21,6 +21,20 @@ class TestAutobench < Minitest::Test
     assert_equal "/"         , ab.config["uri"]
   end
 
+  def test_render
+    ab = Autobench.new("./config/config.yml", { "server" => "localhost", "port" => 4567 })
+    assert ab.render.benchmark
+    assert ab.render.passed?
+  end
+
+  def test_yslow
+    ab = Autobench.new("./config/config.yml", {
+      "server" => "localhost", "port" => 4567,
+      "phantomjs" => "./tests/support/phantomjs"})
+
+    assert ab.yslow.benchmark
+    assert ab.yslow.passed?
+  end
 end
 
 # vim: ft=ruby:

@@ -20,18 +20,20 @@ class Autobench::Render
 
     results = {}
     @config["thresholds"]["render"].each_key do |key|
-      results[key] = @full_results[key.to_sym]
+      results[key] = full_results[key.to_sym]
     end
     return results
   end
 
   def [](key)
+    raise "missing benchmarks" unless @full_results
     @full_results[key.to_sym]
   end
 
   def passed?
+    raise "missing benchmarks" unless @full_results
     @config["thresholds"]["render"].each do |key,val|
-      return false if (@full_results[key.to_sym].to_f > val.to_f)
+      return false if (full_results[key.to_sym].to_f > val.to_f)
     end
     return true
   end
