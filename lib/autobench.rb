@@ -1,10 +1,12 @@
 require 'autobench/config'
 require 'autobench/render'
 require 'autobench/yslow'
-require 'autobench/client'
+require 'autobench/loadreport'
 
 class Autobench
   attr_accessor :config
+
+  BENCH_DIR ||= File.dirname(__FILE__)
 
   def initialize config, overides={}
     @config = Autobench::Config.new(config, overides)
@@ -18,8 +20,8 @@ class Autobench
     @yslow  ||= Autobench::YSlow.new(@config)
   end
 
-  def client
-    @client ||= "unimplemented"
+  def loadreport
+    @loadreport ||= "unimplemented"
   end
 end
 
