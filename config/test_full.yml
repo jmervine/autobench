@@ -1,0 +1,33 @@
+server: "github.com"
+port: 80
+uri: "/jmervine/autobench"
+runs: 3
+
+phantomas:
+  modules:
+    - ajaxRequests
+    - assetsTypes
+    - cacheHits
+    - caching
+    - cookies
+    - domComplexity
+    - domQueries
+    - domains
+    - globalVariables
+    - headers
+    - localStorage
+    - requestsStats
+    - staticAssets
+    - waterfall
+    - windowPerformance
+
+thresholds:
+  render:
+    connection_time_median: 200 # ms
+
+  client:
+    requests: 145.0
+
+  yslow:
+    overall:  60
+

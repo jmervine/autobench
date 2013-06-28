@@ -3,6 +3,7 @@ class Autobench
     include Common
     def initialize config
       @config       = config
+      @thresholds   = @config["thresholds"]["client"] rescue []
       @full_results = []
       @failures     = []
       @successes    = []
@@ -11,7 +12,7 @@ class Autobench
     def benchmark
       begin
         @full_results = JSON.parse(%x{#{command}}.strip)
-        @config["thresholds"]["client"].each do |key,threshold|
+        @thresholds.each do |key,threshold|
           if fetch(key) > threshold
             @failures.push("#{key} is #{fetch(key)}, threshold is #{threshold}")
           else
@@ -30,7 +31,22 @@ class Autobench
     end
 
     def fetch(key)
-      return median(full_results.map {|i| i[key] })
+      return median(raw_results.map {|i| i[key] })
+    end
+
+    # backdoor hook to @full_results
+    def raw_results
+      raise "missing benchmarks" unless @full_results
+      @full_results
+    end
+
+    # generate result set that is only medians by default
+    def full_results
+      r = {}
+      raw_results.first.keys.each do |key|
+        r[key] = fetch(key)
+      end
+      return r
     end
 
     private

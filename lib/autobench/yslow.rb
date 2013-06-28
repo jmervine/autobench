@@ -4,14 +4,15 @@ class Autobench
   class YSlow
     include Common
     def initialize config
-      @config    = config
-      @failures  = []
-      @successes = []
+      @config     = config
+      @thresholds = config["thresholds"]["yslow"] rescue []
+      @failures   = []
+      @successes  = []
     end
 
     def benchmark
       @full_results = JSON.parse(%x{#{command}}.strip)
-      @config["thresholds"]["yslow"].each do |key,threshold|
+      @thresholds.each do |key,threshold|
         # U-G-L-Y
         if key == "overall"
           if full_results[mappings[key]].to_i < threshold.to_i
@@ -36,7 +37,12 @@ class Autobench
       return nil
     end
 
+    def full_results
+      return clean_keys(@full_results, ['u','i'])
+    end
+
     private
+
     def command
       "cd #{@config.yslow} && #{@config.phantomjs} ./yslow.js --info basic #{options} http://#{@config['server']}#{(@config.has_key?("port") ? ":#{@config['port']}" : "")}#{@config['uri']}"
     end

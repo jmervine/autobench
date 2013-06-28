@@ -4,9 +4,12 @@ class Autobench
       full_results[key.to_sym]
     end
 
-    def full_results
+    def clean_keys results, ignored
       raise "missing benchmarks" unless @full_results
-      @full_results
+      results.each_key do |key|
+        results.delete(key) if ignored.include?(key)
+      end
+      return results
     end
 
     def failures
@@ -35,6 +38,10 @@ class Autobench
 
     def failed?
       !passed?
+    end
+
+    def thresholds?
+      return !@thresholds.empty?
     end
 
   end

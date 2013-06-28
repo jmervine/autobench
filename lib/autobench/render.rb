@@ -29,6 +29,10 @@ class Autobench
       @full_results
     end
 
+    def full_results
+      return clean_keys(@full_results, %w[ command connection_times ])
+    end
+
     private
     def setup_httperf_configuration config
       @httperf_config = {} # defaults

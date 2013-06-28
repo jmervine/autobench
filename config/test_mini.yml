@@ -1,0 +1,4 @@
+server: "github.com"
+port: 80
+uri: "/jmervine/autobench"
+runs: 3

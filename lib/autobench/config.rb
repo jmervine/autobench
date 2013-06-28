@@ -6,7 +6,13 @@ class Autobench
   class Config
     attr_accessor :basedir
     def initialize config, overides={}
-      @config = YAML.load_file(config).merge(overides)
+      @config = if config.is_a?(String)
+                  YAML.load_file(config).merge(overides)
+                elsif config.is_a?(Hash)
+                  config.merge(overides)
+                else
+                  raise "invalid config"
+                end
     end
 
     def phantomas

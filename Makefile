@@ -8,6 +8,12 @@ setup:
 test:
 	bundle exec rake test
 
+test/functional:
+	bundle exec ./tests/functional/autobench_test.sh
+	bundle exec ./tests/functional/autobenchconfig_test.sh
+
+test/all: test test/functional
+
 phantomas/install:
 	cd lib && wget https://github.com/jmervine/phantomas/archive/$(PHANTOMAS).zip && \
 		unzip $(PHANTOMAS).zip && rm $(PHANTOMAS).zip

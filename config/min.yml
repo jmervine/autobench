@@ -1,0 +1,4 @@
+server: "mervine.net"
+port: 80
+uri: "/"
+runs: 9

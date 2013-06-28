@@ -7,17 +7,17 @@ $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 ################################################################################
 
 require 'optparse'
-require 'benchmark'
-require 'json'
 require 'yaml'
-require 'csv'
+require 'benchmark'
 require 'autobench'
 
 # opts
-@quiet     = false
-@format    = "json"
-@resdir    = "/tmp"
-options    = {}
+options    = {
+  "server" => "localhost",
+  "port"   => 80,
+  "uri"    => "/",
+  "runs"   => 9
+}
 benchmarks = {
   # defaults
   :render => true,
@@ -25,20 +25,23 @@ benchmarks = {
   :client => true
 }
 optparser = OptionParser.new do |opts|
-  opts.banner = "Usage: autobench [options]"
+  opts.banner = "Usage: autobench-config [options]"
 
   opts.separator ""
   opts.separator "Required Arguments:"
 
-  opts.on("-c", "--config FILENAME", "configuration file") do |p|
-    options["config"] = p
+  opts.on("-o", "--output FILENAME", "configuration output file") do |p|
+    @output = p
   end
 
   opts.separator ""
   opts.separator "Optional Arguments:"
   opts.separator ""
-  opts.separator "  Note: server, port, uri and runs overide what's in"
-  opts.separator "  your configuation file."
+  opts.separator "  Note: server, port, uri and runs overide defaults:"
+  opts.separator "  - server: 'localhost'"
+  opts.separator "  - port:   80"
+  opts.separator "  - uri:    '/'"
+  opts.separator "  - runs:   9"
   opts.separator ""
 
 
@@ -58,14 +61,6 @@ optparser = OptionParser.new do |opts|
     options["runs"] = p
   end
 
-  opts.on("-f", "--format [json|yaml|csv]", "raw output format") do |p|
-    @format = p
-  end
-
-  opts.on("-r", "--results [dirname]", "results directory (default: /tmp)") do |p|
-    @resdir = File.expand_path(p)
-  end
-
   opts.separator ""
   opts.separator "Module Exclusion:"
   opts.on("-R", "--without-render", "Do not include render (httperf).") do
@@ -82,9 +77,6 @@ optparser = OptionParser.new do |opts|
 
   opts.separator ""
   opts.separator "Misc. Arguments:"
-  opts.on("-q", "--quiet", "Print no things.") do
-    @quiet = true
-  end
 
   opts.on("-h", "--help", "Show this message") do
     puts opts
@@ -93,71 +85,56 @@ optparser = OptionParser.new do |opts|
 end
 optparser.parse!
 
-unless options.has_key?("config")
+unless defined?(@output)
   puts optparser
   exit
 end
 
 def say msg
-  unless @quiet
-    puts msg
-  end
+  puts msg
 end
 
 # utils
 
-def dump run
-    outfile = File.join(@resdir, "autobench-#{run}-#{Time.now.to_i}.#{@format.gsub('yaml','yml')}")
-    results = @autobench.send(run).full_results
-    File.open(outfile, "w") do |f|
-      case @format
-      when "json"
-        f.write(JSON.pretty_generate(results))
-      when "yaml"
-        f.write(results.to_yaml)
-      when "csv"
-        f.write(
-          CSV.generate { |csv|
-            csv << results.keys
-            csv << results.values
-          }
-        )
-      else
-        raise "unknown format `#{@format}`, try `yaml`, `json` or `csv`"
-        exit 556
-      end
+def dump_data
+    File.open(@output, "w") do |f|
+      f.write(@data.to_yaml)
     end
-    say "=> Raw results (#{@format}): #{outfile}"
+    say "=> Results: #{@output}"
 end
 
 def handle_results test_text, run, time_taken
   @total_time = @total_time + time_taken
 
-  say "Ran #{test_text}"
+  say "Collected: data: #{test_text}"
   say "=> Duration: #{time_taken}"
-
-  if @autobench.send(run).thresholds?
-    say "=> Successes:"
-    say @autobench.send(run).successes
-
-    say "=> Failures:"
-    say @autobench.send(run).failures
-
-    if @autobench.send(run).passed?
-      say "PASS!"
-    else
-      @exit_status = @exit_status + 1
-      say "FAIL!"
-    end
-  end
-  dump(run)
   say " "
+
+  @data["thresholds"][run.to_s] = @autobench.send(run).full_results
+
 end
 
 # action
-@autobench   = Autobench.new(options.delete("config"), options)
+@autobench   = Autobench.new(options)
 @exit_status = 0
 @total_time  = 0
+
+@data = options.merge({
+  "thresholds" => {
+    "render"   => {},
+    "yslow"    => {},
+    "client"   => {}
+  }
+})
+
+%w[ phantomjs node httperf ].each do |bin_name|
+  if (bin_path = %x{which #{bin_name}}.strip) && bin_path != ""
+    @data["paths"] ||= {}
+    @data["paths"][bin_name] = bin_path
+  else
+    say "WARNING: #{bin_name} not found."
+  end
+end
 
 { :render => "Render (httperf)",
   :yslow  => "YSlow (yslow.js)",
@@ -171,10 +148,11 @@ end
   end
 end
 
+dump_data
+
 say "Complete!"
 say "=> Duration: #{@total_time}"
-say "=> #{(@exit_status == 0 ? "Success" : "Failure")}!"
 
-exit @exit_status
+exit
 
 # vim: ft=ruby
