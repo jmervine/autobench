@@ -1,34 +1,47 @@
-# sample config
+# Shared configs
 server: "mervine.net"
 port: 80
 uri: "/"
+runs: 9
 
-render:
-  num-conns: 9
-  # supports all HTTPerf.rb configurations, see:
+#httperf: # for 'render'
+  # 'num-conns' is taken from 'runs' above and not supported here.
+  # 'uri' is taken from 'uri' above and not supported here.
+  #
+  # Supports all other HTTPerf.rb configurations, see:
   #   http://mervine.net/gems/httperfrb
 
 #yslow: # supported shown
   # ruleset: ydefault
   # ua: "<ua string>"
-  # headers: '{ "foo": "bar" }' #
+  # headers: '{ "foo": "bar" }'
   # viewport: "WxH"
 
-client:
-  # used to generate loadreport's config.json
-  # these are the default options included as part of
-  # loadreport, see:
-  #   https://github.com/wesleyhales/loadreport
-  task: "performance"
-  userAgent: "chrome"
-  userAgentAliases:
-    iphone:  "Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7"
-    android: "Mozilla/5.0 (Linux; U; Android 2.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
-    chrome:  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.12 Safari/535.11"
-  wait: 0
-  cacheWait: 200
-  consolePrefix: "#"
-  verbose: false
+phantomas: # for 'client'
+  # 'runs' is taken from 'runs' above and not supported here.
+  # 'url' is taken from 'uri' above and not supported here.
+  #
+  # Possible modules
+  # ----------------
+  #  Note: these are all on by default, so if you comment
+  #  out the block, it's the same as leaving it on. I left
+  #  them here for clarity of configuration.
+  modules:
+    - ajaxRequests
+    - assetsTypes
+    - cacheHits
+    - caching
+    - cookies
+    - domComplexity
+    - domQueries
+    - domains
+    - globalVariables
+    - headers
+    - localStorage
+    - requestsStats
+    - staticAssets
+    - waterfall
+    - windowPerformance
 
 thresholds:
 
@@ -44,8 +57,76 @@ thresholds:
     connection_time_85_pct: 500 # ms
     connection_time_99_pct: 750 # ms
 
-  #client:
-    #<mesaurement>: 500 # ms
+  client:
+    # Here's all of them, use as many or as few as you would like.
+    #   Note: if you remove modules from 'phantomas' config above,
+    #   some of these may become unavailable and autobench will
+    #   error.
+    requests: 145.0
+    gzipRequests: 31.0
+    postRequests: 0.0
+    redirects: 3.0
+    notFound: 0.0
+    timeToFirstByte: 45.5
+    timeToLastByte: 159.0
+    bodySize: 1581198.5
+    contentLength: 1859141.5
+    ajaxRequests: 2.0
+    htmlCount: 8.0
+    htmlSize: 168758.5
+    cssCount: 4.0
+    cssSize: 155605.0
+    jsCount: 99.0
+    jsSize: 1072517.0
+    imageCount: 21.0
+    imageSize: 113304.0
+    base64Count: 3.0
+    base64Size: 4079.0
+    otherCount: 13.0
+    otherSize: 54381.0
+    cacheHits: 1.0
+    cacheMisses: 0.0
+    cachingNotSpecified: 13.0
+    cachingTooShort: 81.0
+    cachingDisabled: 3.0
+    headersCount: 1755.0
+    headersSentCount: 442.0
+    headersRecvCount: 1313.0
+    headersSize: 63270.5
+    headersSentSize: 20424.0
+    headersRecvSize: 42847.5
+    assetsNotGzipped: 84.0
+    assetsWithQueryString: 86.0
+    smallImages: 16.0
+    httpTrafficCompleted: 1626.0
+    domains: 21.0
+    DOMqueries: 3.0
+    DOMinserts: 892.0
+    jQuerySelectors: 0.0
+    jQueryOnDOMReadyFunctions: 0.0
+    cookiesSent: 0.0
+    cookiesRecv: 521.0
+    domainsWithCookies: 4.0
+    documentCookiesLength: 230.5
+    documentCookiesCount: 5.0
+    bodyHTMLSize: 75566.5
+    commentsSize: 0.0
+    hiddenContentSize: 0.0
+    whiteSpacesSize: 3273.0
+    DOMelementsCount: 1175.0
+    DOMelementMaxDepth: 12.0
+    iframesCount: 10.0
+    nodesWithInlineCSS: 116.0
+    imagesWithoutDimensions: 8.0
+    globalVariables: 48.0
+    localStorageEntries: 0.0
+    smallestResponse: 22.0
+    biggestResponse: 171492.0
+    fastestResponse: 16.0
+    slowestResponse: 666.0
+    medianResponse: 130.0
+    onDOMReadyTime: 121.5
+    windowOnLoadTime: 795.0
 
   yslow:
     overall:  60
@@ -58,17 +139,16 @@ thresholds:
 # MISC CONFIGS -- Can mostly be ignored.
 ################################################################################
 
-# Path to yslow.js, incase you want to change the version.
-yslow_js: "./lib/yslow.js"
-# see: http://yslow.org/phantomjs/
+#paths:
+  # SCRIPTS - path should be to container directory.
+  #
+  #yslow:     "/path/to/where/yslow/is"
+  #phantomas: "/path/to/where/phantomas/is"
 
-loadreport_js: "./lib/loadreport.js"
-# see: https://github.com/wesleyhales/loadreport
-
-#phantomjs: "/path/to/phantomjs"
-# by default uses PATH
-
-#httperf: "/path/to/httperf"
-# by default uses PATH
+  # BINARIES - path should be to actual binary. (uses PATH by default)
+  #
+  #phantomjs: "/path/to/phantomjs"
+  #node:      "/path/to/node"
+  #httperf:   "/path/to/httperf"
 
 # vim: ft=yaml:

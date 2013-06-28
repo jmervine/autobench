@@ -1,56 +1,69 @@
 require 'httperf'
-class Autobench::Render
-  attr_accessor :full_results
+class Autobench
+  LIB_DIR ||= File.expand_path('..', File.dirname(__FILE__))
+  class Render
+    attr_accessor :full_results
 
-  def initialize config
-    @httperf        = config.delete("httperf") || nil
-    @config         = config
-    @httperf_config = httperf_config
-
-    @httperf_config["server"] = config["server"] if config.has_key?("server")
-    @httperf_config["port"]   = config["port"]   if config.has_key?("port")
-    @httperf_config["uri"]    = config["uri"]    if config.has_key?("uri")
-
-    @httperf_config.merge!(config["render"])     if config.has_key?("render")
-  end
-
-  def benchmark
-    httperf       = HTTPerf.new(@httperf_config, @httperf)
-    httperf.parse = true
-    @full_results = httperf.run
-
-    results = {}
-    @config["thresholds"]["render"].each_key do |key|
-      results[key] = full_results[key.to_sym]
+    def initialize config
+      @config     = config
+      @thresholds = config.delete("thresholds")["render"]
+      setup_httperf_configuration(config)
     end
-    return results
-  end
 
-  def [](key)
-    raise "missing benchmarks" unless @full_results
-    @full_results[key.to_sym]
-  end
+    def benchmark
+      httperf       = HTTPerf.new(@httperf_config, @config.httperf)
+      httperf.parse = true
+      @full_results = httperf.run
 
-  def passed?
-    raise "missing benchmarks" unless @full_results
-    @config["thresholds"]["render"].each do |key,val|
-      return false if (full_results[key.to_sym].to_f > val.to_f)
+      results = {}
+      @thresholds.each_key do |key|
+        results[key] = full_results[key.to_sym]
+      end
+      return results
     end
-    return true
-  end
 
-  def failed?
-    !passed?
-  end
+    def [](key)
+      raise "missing benchmarks" unless @full_results
+      @full_results[key.to_sym]
+    end
 
-  private
-  def httperf_config
-    { "server"    => "localhost",
-      "uri"       => "/",
-      "port"      => 80,
-      "num-conns" => 9,
-      "verbose"   => true }
+    def passed?
+      raise "missing benchmarks" unless @full_results
+      @thresholds.each do |key,val|
+        return false if (full_results[key.to_sym].to_f > val.to_f)
+      end
+      return true
+    end
+
+    def failed?
+      !passed?
+    end
+
+    private
+    def setup_httperf_configuration config
+      @httperf_config = {} # defaults
+
+      if config.has_key?("httperf")
+        puts config["httperf"]
+        @httperf_config.merge!(config["httperf"])
+      end
+
+      # all required
+      %w{ server port uri }.each do |key|
+        raise "Autobench::Render missing `#{key}`." unless config.has_key?(key)
+        @httperf_config[key] = config[key]
+      end
+
+      if config.has_key?("runs")
+        @httperf_config["num-conns"] = config["runs"]
+      end
+
+      @httperf_config.merge!(httperf_forced_options)
+    end
+
+    def httperf_forced_options
+      { "verbose"   => true }
+    end
   end
 end
-
 # vim: ft=ruby:

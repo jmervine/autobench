@@ -11,13 +11,14 @@ end
 
 class TestAutobenchRender < Minitest::Test
   def setup
-    @options  ||= { "httperf" => File.join(File.dirname(__FILE__), "support/httperf") }
+    @options  ||= { "paths" => { "httperf" => File.join(File.dirname(__FILE__), "support/httperf") }}
     @abrender ||= Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options))
   end
 
   def test_initialize
     assert Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options))
-    assert Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options)).instance_variable_get(:@config)
+    assert Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options)).instance_variable_get(:@httperf_config)
+    assert Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options)).instance_variable_get(:@thresholds)
   end
 
   def test_benchmark
@@ -31,7 +32,7 @@ class TestAutobenchRender < Minitest::Test
     refute @abrender.failed?
 
     # make fail condition
-    @abrender.instance_variable_get(:@config)["thresholds"]["render"]["connection_time_99_pct"] = 1
+    @abrender.instance_variable_get(:@thresholds)["connection_time_99_pct"] = 1
     refute @abrender.passed?
     assert @abrender.failed?
   end

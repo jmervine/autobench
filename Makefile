@@ -1,4 +1,5 @@
 SHELL=/bin/bash
+PHANTOMAS=master
 
 setup:
 	which bundle > /dev/null || gem install bundler
@@ -7,6 +8,6 @@ setup:
 test:
 	bundle exec rake test
 
-upgrade/loadreport:
-	cd lib && rm loadreport.js && wget "https://raw.github.com/wesleyhales/loadreport/master/loadreport.js"
-
+phantomas/install:
+	cd lib && wget https://github.com/jmervine/phantomas/archive/$(PHANTOMAS).zip && \
+		unzip $(PHANTOMAS).zip && rm $(PHANTOMAS).zip

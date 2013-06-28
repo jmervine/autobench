@@ -12,7 +12,7 @@ class TestAutobenchConfig < Minitest::Test
     ab = Autobench::Config.new("./config/config.yml")
     assert_equal "mervine.net" , ab["server"]
     assert_equal "/"           , ab["uri"]
-    assert_equal 9             , ab["render"]["num-conns"]
+    assert_equal 9             , ab["runs"]
   end
 
   def test_overides

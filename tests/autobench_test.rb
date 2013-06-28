@@ -3,6 +3,7 @@ require "autobench"
 
 class TestAutobench < Minitest::Test
   def setup
+    @phantomjs ||= File.expand_path(File.join(::Autobench::LIB_DIR, "..", "tests", "support", "phantomjs"))
   end
 
   def teardown
@@ -24,7 +25,7 @@ class TestAutobench < Minitest::Test
   def test_render
     ab = Autobench.new("./config/config.yml", {
       "server" => "localhost", "port" => 4567,
-      "httperf" => File.join(File.dirname(__FILE__), "support/httperf") })
+      "paths" => { "httperf" => File.join(File.dirname(__FILE__), "support/httperf") }})
     assert ab.render.benchmark
     assert ab.render.passed?
   end
@@ -32,7 +33,7 @@ class TestAutobench < Minitest::Test
   def test_yslow
     ab = Autobench.new("./config/config.yml", {
       "server" => "localhost", "port" => 4567,
-      "phantomjs" => "./tests/support/phantomjs"})
+      "paths" => { "phantomjs" => @phantomjs}})
 
     assert ab.yslow.benchmark
     assert ab.yslow.passed?

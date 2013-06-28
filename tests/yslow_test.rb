@@ -3,6 +3,7 @@ require "autobench"
 
 class TestAutobenchYSlow < Minitest::Test
   def setup
+    @phantomjs ||= File.expand_path(File.join(::Autobench::LIB_DIR, "..", "tests", "support", "phantomjs"))
     @abyslow ||= Autobench::YSlow.new(Autobench::Config.new("./config/config.yml"))
   end
 
@@ -43,15 +44,14 @@ class TestAutobenchYSlow < Minitest::Test
   end
 
   def test_benchmark
-    results = Autobench::YSlow.new(Autobench::Config.new("./config/config.yml",
-                 { "phantomjs" => "./tests/support/phantomjs"})).benchmark
-    assert_equal 64, results["o"]
+    assert_equal Hash, Autobench::YSlow.new(Autobench::Config.new("./config/config.yml",
+                 { "paths" => {"phantomjs" => @phantomjs}})).benchmark.class
   end
 
   def test_passed?
     abyslow = Autobench::YSlow.new(Autobench::Config.new("./config/config.yml",
-                 {"server"    => "localhost",
-                  "phantomjs" => "./tests/support/phantomjs"}))
+                 {"server" => "localhost",
+                  "paths"  => { "phantomjs" => @phantomjs }}))
     abyslow.benchmark
 
     assert abyslow.passed?
