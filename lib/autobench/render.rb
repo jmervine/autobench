@@ -2,11 +2,12 @@ require 'httperf'
 class Autobench
   LIB_DIR ||= File.expand_path('..', File.dirname(__FILE__))
   class Render
-    attr_accessor :full_results
-
+    include Common
     def initialize config
       @config     = config
-      @thresholds = config.delete("thresholds")["render"]
+      @thresholds = config["thresholds"]["render"] rescue []
+      @failures   = []
+      @successes  = []
       setup_httperf_configuration(config)
     end
 
@@ -16,27 +17,15 @@ class Autobench
       @full_results = httperf.run
 
       results = {}
-      @thresholds.each_key do |key|
+      @thresholds.each do |key,threshold|
         results[key] = full_results[key.to_sym]
+        if (full_results[key.to_sym].to_f > threshold.to_f)
+          @failures.push("#{key} is #{full_results[key.to_sym].to_f}, threshold is #{threshold.to_f}")
+        else
+          @successes.push("#{key} is #{full_results[key.to_sym].to_f}, threshold is #{threshold.to_f}")
+        end
       end
       return results
-    end
-
-    def [](key)
-      raise "missing benchmarks" unless @full_results
-      @full_results[key.to_sym]
-    end
-
-    def passed?
-      raise "missing benchmarks" unless @full_results
-      @thresholds.each do |key,val|
-        return false if (full_results[key.to_sym].to_f > val.to_f)
-      end
-      return true
-    end
-
-    def failed?
-      !passed?
     end
 
     private

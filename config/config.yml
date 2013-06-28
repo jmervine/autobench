@@ -49,13 +49,13 @@ thresholds:
     # see HTTPerf.rb docs for all possible options:
     #   http://mervine.net/gems/httperfrb
     connection_time_median: 200 # ms
-    connection_time_avg:    250 # ms
+    #connection_time_avg:    400 # ms
 
     # The following require the modified version of httperf
     # from:
     #   http://github.com/rubyops/httperf
-    connection_time_85_pct: 500 # ms
-    connection_time_99_pct: 750 # ms
+    #connection_time_85_pct: 200 # ms
+    #connection_time_99_pct: 1500 # ms
 
   client:
     # Here's all of them, use as many or as few as you would like.
@@ -130,9 +130,9 @@ thresholds:
 
   yslow:
     overall:  60
-    loadtime: 2500
+    loadtime: 4000
     requests: 135
-    size:     1650000
+    size:     1700000
 
 
 ################################################################################

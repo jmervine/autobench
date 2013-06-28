@@ -1,28 +1,28 @@
 class Autobench
   class Client
+    include Common
     def initialize config
       @config       = config
       @full_results = []
-    end
-
-    def full_results
-      raise "missing benchmarks" if @full_results.empty?
-      @full_results
+      @failures     = []
+      @successes    = []
     end
 
     def benchmark
-      @full_results = JSON.parse(%x{#{command}}.strip)
-    end
-
-    def passed?
-      @config["thresholds"]["client"].each do |key,val|
-        return false if fetch(key) > val
+      begin
+        @full_results = JSON.parse(%x{#{command}}.strip)
+        @config["thresholds"]["client"].each do |key,threshold|
+          if fetch(key) > threshold
+            @failures.push("#{key} is #{fetch(key)}, threshold is #{threshold}")
+          else
+            @successes.push("#{key} is #{fetch(key)}, threshold is #{threshold}")
+          end
+        end
+        @full_results
+      rescue
+        puts "COMMAND FAILED: #{command}"
+        raise
       end
-      return true
-    end
-
-    def failed?
-      !passed?
     end
 
     def [](key)
@@ -35,7 +35,11 @@ class Autobench
 
     private
     def command
-      "cd #{@config.phantomas} && #{@config.node} ./run-multiple.js #{modules} --url=#{@config["uri"]} --runs=#{@config["runs"]} --format=json"
+      "cd #{@config.phantomas} && #{@config.node} ./run-multiple.js #{modules} --url=#{url} --runs=#{@config["runs"]} --format=json"
+    end
+
+    def url
+      "http://#{@config['server']}#{(@config['port'] == 80 ? "" : ":#{@config['port']}")}#{@config['uri']}"
     end
 
     def modules

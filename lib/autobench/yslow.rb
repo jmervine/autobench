@@ -2,47 +2,43 @@ require 'json'
 class Autobench
   LIB_DIR ||= File.expand_path('..', File.dirname(__FILE__))
   class YSlow
+    include Common
     def initialize config
       @config    = config
-    end
-
-    def full_results
-      raise "missing benchmarks" unless @full_results
-      @full_results
+      @failures  = []
+      @successes = []
     end
 
     def benchmark
-      @full_results = JSON.parse(%x{#{phantomjs_command}}.strip)
-    end
-
-    def passed?
-      @config["thresholds"]["yslow"].each do |key,val|
+      @full_results = JSON.parse(%x{#{command}}.strip)
+      @config["thresholds"]["yslow"].each do |key,threshold|
+        # U-G-L-Y
         if key == "overall"
-          return false if full_results[mappings[key]].to_i < val.to_i
+          if full_results[mappings[key]].to_i < threshold.to_i
+            @failures.push("#{key} is #{full_results[mappings[key]]}, threshold is #{threshold}");
+          else
+            @successes.push("#{key} is #{full_results[mappings[key]]}, threshold is #{threshold}");
+          end
         else
-          return false if full_results[mappings[key]].to_i > val.to_i
+          if full_results[mappings[key]].to_i > threshold.to_i
+            @failures.push("#{key} is #{full_results[mappings[key]]}, threshold is #{threshold}");
+          else
+            @successes.push("#{key} is #{full_results[mappings[key]]}, threshold is #{threshold}");
+          end
         end
       end
-      return true
-    end
-
-    def failed?
-      !passed?
+      @full_results
     end
 
     def [](key)
       return full_results[mappings[key]] if mappings.keys.include?(key)
       return full_results[key]           if mappings.values.include?(key)
-      raise "unknown key"
+      return nil
     end
 
     private
-    def yslow_command
-      return "./yslow.js #{options} http://#{@config['server']}#{(@config.has_key?("port") ? ":#{@config['port']}" : "")}#{@config['uri']}"
-    end
-
-    def phantomjs_command
-      "cd #{@config.yslow} && #{@config.phantomjs} #{yslow_command}"
+    def command
+      "cd #{@config.yslow} && #{@config.phantomjs} ./yslow.js --info basic #{options} http://#{@config['server']}#{(@config.has_key?("port") ? ":#{@config['port']}" : "")}#{@config['uri']}"
     end
 
     def options

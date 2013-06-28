@@ -25,7 +25,7 @@ class TestAutobench < Minitest::Test
       "server" => "localhost", "port" => 4567,
       "paths" => { "httperf" => File.join(File.dirname(__FILE__), "support/httperf") }})
     assert ab.render.benchmark
-    assert ab.render.passed?
+    assert ab.render.passed?, "render should have passed"
   end
 
   def test_yslow

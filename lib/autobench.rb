@@ -1,3 +1,4 @@
+require 'autobench/common'
 require 'autobench/config'
 require 'autobench/render'
 require 'autobench/yslow'
