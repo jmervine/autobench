@@ -14,18 +14,19 @@ class Autobench
     def benchmark
       httperf       = HTTPerf.new(@httperf_config, @config.httperf)
       httperf.parse = true
-      @full_results = httperf.run
 
-      results = {}
+      @full_results = httperf.run.inject({}){|memo,(k,v)| memo[k.to_s] = v; memo}
+                                  # keys: sym -> str
+
       @thresholds.each do |key,threshold|
-        results[key] = full_results[key.to_sym]
-        if (full_results[key.to_sym].to_f > threshold.to_f)
-          @failures.push("#{key} is #{full_results[key.to_sym].to_f}, threshold is #{threshold.to_f}")
+        if (full_results[key].to_f > threshold.to_f)
+          @failures.push("#{key} is #{full_results[key].to_f}, threshold is #{threshold.to_f}")
         else
-          @successes.push("#{key} is #{full_results[key.to_sym].to_f}, threshold is #{threshold.to_f}")
+          @successes.push("#{key} is #{full_results[key].to_f}, threshold is #{threshold.to_f}")
         end
       end
-      return results
+
+      @full_results
     end
 
     private

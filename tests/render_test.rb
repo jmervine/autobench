@@ -10,53 +10,58 @@ class HTTPerf
 end
 
 class TestAutobenchRender < Minitest::Test
+
+  def new_render overides={}
+    Autobench::Render.new( Autobench::Config.new( "./config/config.yml", @options.merge(overides)))
+  end
+
   def setup
     @options  ||= { "paths" => { "httperf" => File.join(File.dirname(__FILE__), "support/httperf") }}
-    @abrender   = Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options))
+    @render = new_render
   end
 
   def test_initialize
-    assert Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options))
-    assert Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options)).instance_variable_get(:@httperf_config)
-    assert Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options)).instance_variable_get(:@thresholds)
+    assert @render, "render should be"
+    assert @render.instance_variable_get(:@httperf_config),
+      "render should have httperf_config"
+    assert @render.instance_variable_get(:@thresholds),
+      "render should have thresholds"
   end
 
   def test_benchmark
-    results = @abrender.benchmark
-    assert_equal "169.5", results["connection_time_median"]
+    assert_equal "169.5", @render.benchmark["connection_time_median"]
   end
 
   def test_passed?
-    @abrender.benchmark
-    assert @abrender.passed?, "render should have passed"
-    refute @abrender.failed?, "render should have failed"
+    @render.benchmark
+    assert @render.passed?, "render should have passed"
+    refute @render.failed?, "render should have failed"
 
     # make fail condition
-    abrender = Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options.merge(
-      { "thresholds" => { "render" => { "connection_time_median" => 1 }}})))
-    abrender.benchmark
-    refute abrender.passed?, "render should not have passed"
-    assert abrender.failed?, "render should have failed"
+    render = new_render({ "thresholds" => { "render" => { "connection_time_median" => 1 }}})
+    render.benchmark
+    refute render.passed?, "render should not have passed"
+    assert render.failed?, "render should have failed"
   end
 
   def test_failures
-    abrender = Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options.merge(
-      { "thresholds" => { "render" => { "connection_time_median" => 1 }}})))
-    abrender.benchmark
-    assert abrender.failures.include?("[1] connection_time_median is 169.5, threshold is 1.0")
+    render = new_render({ "thresholds" => { "render" => { "connection_time_median" => 1 }}})
+    render.benchmark
+    assert render.failures.include?("[1] connection_time_median is 169.5, threshold is 1.0"),
+      "failures didn't have what was expected"
 
-    @abrender.benchmark
-    assert_equal "none", @abrender.failures
+    @render.benchmark
+    assert_equal "none", @render.failures
   end
 
   def test_successes
-    @abrender.benchmark
-    assert @abrender.successes.include?("[1] connection_time_median is 169.5, threshold is 200.0")
+    @render.benchmark
+    assert @render.successes.include?("[1] connection_time_median is 169.5, threshold is 200.0"),
+      "successes didn't have what was expected"
 
-    abrender = Autobench::Render.new(Autobench::Config.new("./config/config.yml", @options.merge(
-      { "thresholds" => { "render" => { "connection_time_median" => 1 }}})))
-    abrender.benchmark
-    assert_equal "none", abrender.successes
+    render = new_render({ "thresholds" => { "render" => { "connection_time_median" => 1 }}})
+    render.benchmark
+    assert_equal "none", render.successes
   end
 end
 
