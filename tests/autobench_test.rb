@@ -4,6 +4,7 @@ require "autobench"
 class TestAutobench < Minitest::Test
   def setup
     @phantomjs ||= File.expand_path(File.join(::Autobench::LIB_DIR, "..", "tests", "support", "phantomjs"))
+    @node      ||= File.expand_path(File.join(::Autobench::LIB_DIR, "..", "tests", "support", "node"))
   end
 
   def teardown
@@ -37,6 +38,15 @@ class TestAutobench < Minitest::Test
 
     assert ab.yslow.benchmark
     assert ab.yslow.passed?
+  end
+
+  def test_client
+    ab = Autobench.new("./config/config.yml", {
+      "server" => "localhost", "port" => 4567,
+      "paths" => { "node" => @node}})
+
+    assert ab.client.benchmark
+    assert ab.client.passed?
   end
 end
 
