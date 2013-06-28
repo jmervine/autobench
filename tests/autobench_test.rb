@@ -3,11 +3,8 @@ require "autobench"
 
 class TestAutobench < Minitest::Test
   def setup
-    @phantomjs ||= File.expand_path(File.join(::Autobench::LIB_DIR, "..", "test", "support", "phantomjs"))
-    @node      ||= File.expand_path(File.join(::Autobench::LIB_DIR, "..", "test", "support", "node"))
-  end
-
-  def teardown
+    @phantomjs ||= File.expand_path(File.join(::Autobench::LIB_DIR, "..", "tests", "support", "phantomjs"))
+    @node      ||= File.expand_path(File.join(::Autobench::LIB_DIR, "..", "tests", "support", "node"))
   end
 
   def test_init

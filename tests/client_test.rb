@@ -4,11 +4,8 @@ require "autobench"
 class TestAutobenchClient < Minitest::Test
   def setup
     @rootdir ||= File.expand_path("..", File.dirname(__FILE__))
-    @options ||= { "paths" => { "node" => File.expand_path(File.join(::Autobench::LIB_DIR, "..", "test", "support", "node")) }}
+    @options ||= { "paths" => { "node" => File.expand_path(File.join(::Autobench::LIB_DIR, "..", "tests", "support", "node")) }}
     @client    = Autobench::Client.new(Autobench::Config.new("./config/config.yml", @options))
-  end
-
-  def teardown
   end
 
   def test_initialize

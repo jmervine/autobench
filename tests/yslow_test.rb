@@ -3,11 +3,8 @@ require "autobench"
 
 class TestAutobenchYSlow < Minitest::Test
   def setup
-    @phantomjs ||= File.expand_path(File.join(::Autobench::LIB_DIR, "..", "test", "support", "phantomjs"))
+    @phantomjs ||= File.expand_path(File.join(::Autobench::LIB_DIR, "..", "tests", "support", "phantomjs"))
     @abyslow ||= Autobench::YSlow.new(Autobench::Config.new("./config/config.yml"))
-  end
-
-  def teardown
   end
 
   def test_initialize

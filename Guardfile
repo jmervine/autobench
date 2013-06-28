@@ -1,24 +1,24 @@
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
-guard 'minitest' do
-  # with Minitest::Unit
-  watch(%r|^test/(.*)\/?test_(.*)\.rb|)
-  watch(%r|^lib/(.*)([^/]+)\.rb|)     { |m| "test/#{m[1]}test_#{m[2]}.rb" }
-  #watch(%r|^test/test_helper\.rb|)    { "test" }
-
-  # with Minitest::Spec
-  # watch(%r|^spec/(.*)_spec\.rb|)
-  # watch(%r|^lib/(.*)([^/]+)\.rb|)     { |m| "spec/#{m[1]}#{m[2]}_spec.rb" }
-  # watch(%r|^spec/spec_helper\.rb|)    { "spec" }
-
-  # Rails 3.2
-  # watch(%r|^app/controllers/(.*)\.rb|) { |m| "test/controllers/#{m[1]}_test.rb" }
-  # watch(%r|^app/helpers/(.*)\.rb|)     { |m| "test/helpers/#{m[1]}_test.rb" }
-  # watch(%r|^app/models/(.*)\.rb|)      { |m| "test/unit/#{m[1]}_test.rb" }
-
-  # Rails
-  # watch(%r|^app/controllers/(.*)\.rb|) { |m| "test/functional/#{m[1]}_test.rb" }
-  # watch(%r|^app/helpers/(.*)\.rb|)     { |m| "test/helpers/#{m[1]}_test.rb" }
-  # watch(%r|^app/models/(.*)\.rb|)      { |m| "test/unit/#{m[1]}_test.rb" }
+guard :bundler do
+  watch("Gemfile")
 end
+
+#guard "shell", :all_on_start => true do
+  #watch(%r{^test/(.*)\/?test_(.*)\.rb}) do |m|
+    #`bundle exec ruby -Ilib -Itest -rlib/autobench ./test/#{m[0]}/#{m[1]}_test.rb`
+  #end
+#end
+
+
+guard 'minitest', :version => 5,
+                  :bundler => true do
+
+  # with Minitest::Unit
+  watch(%r|^test/(.*)\/?(.*)_test\.rb|)
+  watch(%r|^lib/(.*)([^/]+)\.rb|)     { |m| "test/#{m[1]}#{m[2]}_test.rb" }
+  watch(%r|^test/test_helper\.rb|)    { "test" }
+end
+
+# vim: ft=ruby:

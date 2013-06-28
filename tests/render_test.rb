@@ -4,7 +4,7 @@ require "autobench"
 ## Mock Httperf#run to parse static results
 class HTTPerf
   def run
-    $verbose_raw ||= File.open("./test/support/dummy_verbose_results.txt","r").read
+    $verbose_raw ||= File.open("./tests/support/dummy_verbose_results.txt","r").read
     return Parser.parse($verbose_raw)
   end
 end

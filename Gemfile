@@ -10,7 +10,6 @@ group :test do
 end
 
 group :development do
-  gem "guard-minitest"
   gem "pry"
   gem "pry-doc"
 end
