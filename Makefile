@@ -5,7 +5,7 @@ setup:
 	which bundle > /dev/null || gem install bundler
 	bundle install --path vendor/bundle
 
-test:
+tests:
 	bundle exec rake test
 
 phantomas/install:

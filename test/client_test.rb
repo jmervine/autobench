@@ -3,7 +3,8 @@ require "autobench"
 
 class TestAutobenchClient < Minitest::Test
   def setup
-    @options ||= { "paths" => { "node" => File.expand_path(File.join(::Autobench::LIB_DIR, "..", "tests", "support", "node")) }}
+    @rootdir ||= File.expand_path("..", File.dirname(__FILE__))
+    @options ||= { "paths" => { "node" => File.expand_path(File.join(::Autobench::LIB_DIR, "..", "test", "support", "node")) }}
     @client    = Autobench::Client.new(Autobench::Config.new("./config/config.yml", @options))
   end
 
@@ -28,11 +29,11 @@ class TestAutobenchClient < Minitest::Test
     options = @options.merge({ "phantomas" => { "modules" => [ "foobar", "bahboo", "bing" ]}})
     options.delete("paths") # don't want this for this test
 
-    assert_equal "cd /home/jmervine/Development/autobench/lib/phantomas && node ./run-multiple.js --modules=foobar,bahboo,bing --url=/ --runs=9 --format=json",
+    assert_equal "cd #{@rootdir}/lib/phantomas && node ./run-multiple.js --modules=foobar,bahboo,bing --url=/ --runs=9 --format=json",
       Autobench::Client.new(Autobench::Config.new("./config/config.yml", options)).send(:command)
 
     options = options.merge("uri" => "/foobar", "runs" => 5)
-    assert_equal "cd /home/jmervine/Development/autobench/lib/phantomas && node ./run-multiple.js --modules=foobar,bahboo,bing --url=/foobar --runs=5 --format=json",
+    assert_equal "cd #{@rootdir}/lib/phantomas && node ./run-multiple.js --modules=foobar,bahboo,bing --url=/foobar --runs=5 --format=json",
       Autobench::Client.new(Autobench::Config.new("./config/config.yml", options)).send(:command)
   end
 
