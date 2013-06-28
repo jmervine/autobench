@@ -4,9 +4,9 @@
 >
 > TODOs:
 >
-> * Functional tests - without httperf, node, phantomjs stubs.
-> * Creating `autobench` binary.
-> * Build and release gem.
+> * Currently, yslow.js and phantomas do not work, unless
+>   you're running this from within the root directoy. I'm
+>   still trying to figure out why.
 
 ### TODO: Installation
 
