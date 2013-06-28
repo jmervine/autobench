@@ -4,10 +4,11 @@
 >
 > TODOs:
 >
-> * Implement `client` functionality.
+> * Functional tests - without httperf, node, phantomjs stubs.
+> * Creating `autobench` binary.
 > * Build and release gem.
 
-### Installation
+### TODO: Installation
 
     gem install autobench
 
@@ -17,11 +18,11 @@
     echo "gem 'autobench'" >> Gemfile
     bundle install --path vendor/bundle
 
-### Usage
+### TODO: Usage
 
     autobench -c ./path/to/config.yml
 
-### Minitest Integration
+### DONE: Minitest Integration
 
     require "minitest/autorun"
     require "autobench"
@@ -32,24 +33,24 @@
         end
 
         def test_autobench_render
-            results = @autobench.render.benchmark
-            assert results["connection_time_median"] < 500 # ms
+            @autobench.render.benchmark
+            assert @autobench.render["connection_time_median"] < 500 # ms
 
             # or...
             assert @autobench.render.passed?
         end
 
         def test_autobench_yslow
-            results = @autobench.yslow.benchmark
-            assert results["overall"] >= 95 # score
+            @autobench.yslow.benchmark
+            assert @autobench.yslow["overall"] >= 95 # score
 
             # or...
             assert @autobench.yslow.passed?
         end
 
         def test_autobench_client
-            results = @autobench.client.benchmark
-            assert results["load_key"] < 500 # ms
+            @autobench.client.benchmark
+            assert @autobench["requests"] < 100 # connections
 
             # or...
             assert @autobench.client.passed?
