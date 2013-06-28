@@ -106,7 +106,7 @@ end
 def handle_results test_text, run, time_taken
   @total_time = @total_time + time_taken
 
-  say "Collected: data: #{test_text}"
+  say "Collected data: #{test_text}"
   say "=> Duration: #{time_taken}"
   say " "
 

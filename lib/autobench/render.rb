@@ -19,11 +19,23 @@ class Autobench
                                   # keys: sym -> str
 
       @thresholds.each do |key,threshold|
-        if (full_results[key].to_f > threshold.to_f)
-          @failures.push("#{key} is #{full_results[key].to_f}, threshold is #{threshold.to_f}")
+        if higher_is_better.include?(key)
+          if (full_results[key].to_f < threshold.to_f)
+            @failures.push("#{key} is #{full_results[key].to_f}, threshold is #{threshold.to_f}")
+          else
+            @successes.push("#{key} is #{full_results[key].to_f}, threshold is #{threshold.to_f}")
+          end
         else
-          @successes.push("#{key} is #{full_results[key].to_f}, threshold is #{threshold.to_f}")
+          if (full_results[key].to_f > threshold.to_f)
+            @failures.push("#{key} is #{full_results[key].to_f}, threshold is #{threshold.to_f}")
+          else
+            @successes.push("#{key} is #{full_results[key].to_f}, threshold is #{threshold.to_f}")
+          end
         end
+      end
+
+      ignored_keys.each do |key|
+        @full_results.delete(key)
       end
 
       @full_results
@@ -57,6 +69,33 @@ class Autobench
 
     def httperf_forced_options
       { "verbose"   => true }
+    end
+
+    def higher_is_better
+      %w[
+        connection_rate_per_sec
+        request_rate_per_sec
+        reply_status_2xx
+        total_connections
+        total_requests
+        total_replies
+      ]
+    end
+    def ignored_keys
+      %w[
+        max_connect_burst_length
+        cpu_time_system_pct
+        cpu_time_total_pct
+        cpu_time_user_sec
+        cpu_time_system_sec
+        cpu_time_user_pct
+        reply_rate_min
+        reply_rate_avg
+        reply_rate_max
+        reply_rate_stddev
+        reply_rate_samples
+        connection_length
+      ]
     end
   end
 end

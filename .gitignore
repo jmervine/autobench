@@ -1,3 +1,5 @@
 /vendor/bundle
 /reports
 config.json
+*.gem
+Gemfile.lock
