@@ -17,3 +17,10 @@ test/all: test test/functional
 phantomas/install:
 	cd lib && wget https://github.com/jmervine/phantomas/archive/$(PHANTOMAS).zip && \
 		unzip $(PHANTOMAS).zip && rm $(PHANTOMAS).zip
+
+build:
+	rm *.gem
+	gem build autobench.gemspec
+
+push:
+	gem push autobench-*.gem

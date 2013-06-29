@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Joshua Mervine"]
   s.email       = ["joshua@mervine.net"]
-  s.homepage    = "http://mervine.net/gems/autoperf"
+  s.homepage    = "http://mervine.net/gems/autobench"
   s.summary     = "Autobench (w/ httperf, yslow.js, phantomas)"
   s.description = "Autobench is a ruby based web page benchmarking tool, wrapping other popular utiliies. Namely: httperf, yslow.js and phantomas."
 
