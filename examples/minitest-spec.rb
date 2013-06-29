@@ -1,5 +1,4 @@
 require "minitest/autorun"
-require "minitest/spec"
 require "autobench"
 
 describe "when I run autobench" do
@@ -11,21 +10,24 @@ describe "when I run autobench" do
 	describe "render" do
 		it "should pass thresholds" do
       @autobench.render.benchmark
-      @autobench.render.passed?.should.be true
+      assert @autobench.render.passed?,
+          "Passed:\n#{@autobench.render.successes}\nFailed:\n#{@autobench.render.failures}"
 		end
 	end
 
 	describe "client" do
 		it "should pass thresholds" do
       @autobench.client.benchmark
-      @autobench.client.passed?.should.be true
+      assert @autobench.client.passed?,
+          "Passed:\n#{@autobench.client.successes}\nFailed:\n#{@autobench.client.failures}"
 		end
 	end
 
 	describe "yslow" do
 		it "should pass thresholds" do
       @autobench.yslow.benchmark
-      @autobench.yslow.passed?.should.be true
+      assert @autobench.yslow.passed?,
+          "Passed:\n#{@autobench.yslow.successes}\nFailed:\n#{@autobench.yslow.failures}"
 		end
 	end
 

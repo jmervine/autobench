@@ -1,5 +1,6 @@
 language: ruby
 script: PATH="./test:$PATH" bundle exec rake test
+bundler_args: --without examples --without development
 rvm:
   - 1.9.2
   - 1.9.3
