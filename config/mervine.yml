@@ -1,0 +1,42 @@
+---
+server: mervine.net
+port: 80
+uri: /performance-testing-with-httperf
+runs: 9
+thresholds:
+  render:
+    connection_rate_per_sec: '4'
+    connection_time_median: '100'
+    reply_size_content: '20000.0'
+    reply_status_2xx: '9'
+    reply_status_3xx: '0'
+    reply_status_4xx: '0'
+    reply_status_5xx: '0'
+    connection_time_85_pct: '130'
+  yslow:
+    overall: 76
+    requests: 55
+    loadtime: 2000
+  client:
+    requests: 70.0
+    redirects: 2.0
+    notFound: 0.0
+    timeToFirstByte: 200
+    ajaxRequests: 2.0
+    htmlCount: 8.0
+    htmlSize: 175000.0
+    cssCount: 4.0
+    cssSize: 165000.0
+    jsCount: 23.0
+    jsSize: 830000.0
+    imageCount: 18.0
+    assetsNotGzipped: 9.0
+    domains: 18.0
+    domainsWithCookies: 4.0
+    iframesCount: 10.0
+    onDOMReadyTime: 200.0
+    windowOnLoadTime: 1000.0
+paths:
+  phantomjs: /usr/local/bin/phantomjs
+  node: /usr/bin/node
+  httperf: /usr/local/bin/httperf
