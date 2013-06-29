@@ -11,7 +11,11 @@ class Autobench
     end
 
     def benchmark
-      @full_results = JSON.parse(%x{#{command}}.strip)
+      begin
+        @full_results = JSON.parse(%x{#{command}}.strip)
+      rescue
+        raise "Error running: #{command}"
+      end
       @thresholds.each do |key,threshold|
         # U-G-L-Y
         if key == "overall"
@@ -41,8 +45,16 @@ class Autobench
       return clean_keys(@full_results, ['u','i'])
     end
 
-    private
+    def mappings
+      {
+        "overall"  => "o",
+        "loadtime" => "lt",
+        "requests" => "r",
+        "size"     => "w"
+      }
+    end
 
+    private
     def command
       "cd #{@config.yslow} && #{@config.phantomjs} ./yslow.js --info basic #{options} http://#{@config['server']}#{(@config.has_key?("port") ? ":#{@config['port']}" : "")}#{@config['uri']}"
     end
@@ -56,15 +68,6 @@ class Autobench
       end
 
       return ret.join(" ")
-    end
-
-    def mappings
-      {
-        "overall"  => "o",
-        "loadtime" => "lt",
-        "requests" => "r",
-        "size"     => "w"
-      }
     end
   end
 end

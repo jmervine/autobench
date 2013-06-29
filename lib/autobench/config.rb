@@ -16,11 +16,23 @@ class Autobench
     end
 
     def phantomas
-      return @config["paths"]["phantomas"] rescue File.join(::Autobench::LIB_DIR, "phantomas")
-    end
+      default = File.join(::Autobench::LIB_DIR, "phantomas")
+      begin
+        return default if @config["paths"]["phantomas"].nil?
+        return @config["paths"]["phantomas"]
+      rescue NoMethodError
+        return default
+      end
+   end
 
     def yslow
-      return @config["paths"]["yslow"] rescue ::Autobench::LIB_DIR
+      default = ::Autobench::LIB_DIR
+      begin
+        return default if @config["paths"]["yslow"].nil?
+        return @config["paths"]["yslow"]
+      rescue NoMethodError
+        return default
+      end
     end
 
     %w{ httperf node phantomjs }.each do |bin|

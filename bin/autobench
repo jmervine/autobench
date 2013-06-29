@@ -144,10 +144,10 @@ def handle_results test_text, run, time_taken
     say @autobench.send(run).failures
 
     if @autobench.send(run).passed?
-      say "PASS!"
+      say "=> PASS!"
     else
       @exit_status = @exit_status + 1
-      say "FAIL!"
+      say "=> FAIL!"
     end
   end
   dump(run)

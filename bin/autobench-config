@@ -110,7 +110,11 @@ def handle_results test_text, run, time_taken
   say "=> Duration: #{time_taken}"
   say " "
 
-  @data["thresholds"][run.to_s] = @autobench.send(run).full_results
+  if run == :yslow
+    @data["thresholds"]["yslow"] = @autobench.yslow.full_results.inject({}){ |memo,(k,v)| memo[ @autobench.yslow.mappings.select { |key, val| val == k }.keys.first ] = v; memo }
+  else
+    @data["thresholds"][run.to_s] = @autobench.send(run).full_results
+  end
 
 end
 

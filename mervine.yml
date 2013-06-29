@@ -1,50 +1,38 @@
 ---
 server: mervine.net
 port: 80
-uri: /performance-testing-with-httperf
-runs: 9
+uri: /
+runs: 3
 thresholds:
   render:
-    max_connect_burst_length: '1'
-    total_connections: '9'
-    total_requests: '9'
-    total_replies: '9'
-    total_test_duration: '1.562'
-    connection_rate_per_sec: '5.8'
-    connection_rate_ms_conn: '173.5'
-    connection_time_min: '154.8'
-    connection_time_avg: '173.5'
-    connection_time_max: '188.1'
-    connection_time_median: '175.5'
-    connection_time_stddev: '11.2'
-    connection_time_connect: '55.3'
-    connection_length: '1.000'
-    request_rate_per_sec: '5.8'
-    request_rate_ms_request: '173.5'
-    request_size: '96.0'
-    reply_rate_min: '0.0'
-    reply_rate_avg: '0.0'
-    reply_rate_max: '0.0'
-    reply_rate_stddev: '0.0'
-    reply_rate_samples: '0'
-    reply_time_response: '61.8'
-    reply_time_transfer: '56.4'
-    reply_size_header: '253.0'
-    reply_size_content: '17977.0'
+    total_connections: '3'
+    total_requests: '3'
+    total_replies: '3'
+    total_test_duration: '0.423'
+    connection_rate_per_sec: '7.1'
+    connection_rate_ms_conn: '140.9'
+    connection_time_min: '137.7'
+    connection_time_avg: '140.9'
+    connection_time_max: '142.6'
+    connection_time_median: '142.5'
+    connection_time_stddev: '2.7'
+    connection_time_connect: '20.9'
+    request_rate_per_sec: '7.1'
+    request_rate_ms_request: '140.9'
+    request_size: '64.0'
+    reply_time_response: '22.7'
+    reply_time_transfer: '97.2'
+    reply_size_header: '261.0'
+    reply_size_content: '69932.0'
     reply_size_footer: '0.0'
-    reply_size_total: '18230.0'
+    reply_size_total: '70193.0'
     reply_status_1xx: '0'
-    reply_status_2xx: '9'
+    reply_status_2xx: '3'
     reply_status_3xx: '0'
     reply_status_4xx: '0'
     reply_status_5xx: '0'
-    cpu_time_user_sec: '0.48'
-    cpu_time_system_sec: '1.08'
-    cpu_time_user_pct: '30.7'
-    cpu_time_system_pct: '68.9'
-    cpu_time_total_pct: '99.7'
-    net_io_kb_sec: '103.1'
-    net_io_bps: 0.8*10^6
+    net_io_kb_sec: '487.0'
+    net_io_bps: 4.0*10^6
     errors_total: '0'
     errors_client_timeout: '0'
     errors_socket_timeout: '0'
@@ -54,83 +42,83 @@ thresholds:
     errors_addr_unavail: '0'
     errors_ftab_full: '0'
     errors_other: '0'
-    connection_time_75_pct: '179.66'
-    connection_time_80_pct: '179.66'
-    connection_time_85_pct: '187.51'
-    connection_time_90_pct: '187.51'
-    connection_time_95_pct: '188.14'
-    connection_time_99_pct: '188.14'
+    connection_time_75_pct: '142.27'
+    connection_time_80_pct: '142.27'
+    connection_time_85_pct: '142.56'
+    connection_time_90_pct: '142.56'
+    connection_time_95_pct: '142.56'
+    connection_time_99_pct: '142.56'
   yslow:
-    w: 1009180
-    o: 75
-    r: 53
-    lt: 6058
+    size: 1591282
+    overall: 65
+    requests: 132
+    loadtime: 5728
   client:
-    requests: 65.0
-    gzipRequests: 30.0
+    requests: 145.0
+    gzipRequests: 31.0
     postRequests: 0.0
-    redirects: 2.0
+    redirects: 3.0
     notFound: 0.0
-    timeToFirstByte: 161.0
-    timeToLastByte: 224.0
-    bodySize: 1028636.0
-    contentLength: 1090436.0
+    timeToFirstByte: 61.0
+    timeToLastByte: 117.0
+    bodySize: 1455593.0
+    contentLength: 1758216.0
     ajaxRequests: 2.0
     htmlCount: 8.0
-    htmlSize: 142112.0
+    htmlSize: 168758.0
     cssCount: 4.0
     cssSize: 155592.0
-    jsCount: 23.0
-    jsSize: 657425.0
-    imageCount: 18.0
-    imageSize: 18226.0
+    jsCount: 99.0
+    jsSize: 971576.0
+    imageCount: 21.0
+    imageSize: 122333.0
     base64Count: 3.0
     base64Size: 4079.0
-    otherCount: 12.0
-    otherSize: 31474.0
-    cacheHits: 1.0
+    otherCount: 13.0
+    otherSize: 40259.0
+    cacheHits: 0.0
     cacheMisses: 0.0
-    cachingNotSpecified: 11.0
-    cachingTooShort: 4.0
+    cachingNotSpecified: 13.0
+    cachingTooShort: 81.0
     cachingDisabled: 3.0
-    headersCount: 797.0
-    headersSentCount: 202.0
-    headersRecvCount: 595.0
-    headersSize: 35417.0
-    headersSentSize: 15218.0
-    headersRecvSize: 20199.0
-    assetsNotGzipped: 9.0
-    assetsWithQueryString: 11.0
-    smallImages: 17.0
-    httpTrafficCompleted: 2349.0
-    domains: 23.0
+    headersCount: 1755.0
+    headersSentCount: 442.0
+    headersRecvCount: 1313.0
+    headersSize: 63289.0
+    headersSentSize: 20424.0
+    headersRecvSize: 42865.0
+    assetsNotGzipped: 84.0
+    assetsWithQueryString: 86.0
+    smallImages: 16.0
+    httpTrafficCompleted: 2144.0
+    domains: 21.0
     DOMqueries: 3.0
-    DOMinserts: 51.0
+    DOMinserts: 894.0
     jQuerySelectors: 0.0
     jQueryOnDOMReadyFunctions: 0.0
     cookiesSent: 0.0
-    cookiesRecv: 522.0
+    cookiesRecv: 521.0
     domainsWithCookies: 4.0
     documentCookiesLength: 232.0
     documentCookiesCount: 5.0
-    bodyHTMLSize: 22986.0
+    bodyHTMLSize: 75566.0
     commentsSize: 0.0
     hiddenContentSize: 0.0
-    whiteSpacesSize: 1028.0
-    DOMelementsCount: 250.0
-    DOMelementMaxDepth: 10.0
+    whiteSpacesSize: 3273.0
+    DOMelementsCount: 1175.0
+    DOMelementMaxDepth: 12.0
     iframesCount: 10.0
-    nodesWithInlineCSS: 21.0
-    imagesWithoutDimensions: 5.0
-    globalVariables: 45.0
+    nodesWithInlineCSS: 116.0
+    imagesWithoutDimensions: 8.0
+    globalVariables: 48.0
     localStorageEntries: 0.0
     smallestResponse: 22.0
-    biggestResponse: 119402.0
-    fastestResponse: 46.0
-    slowestResponse: 475.0
-    medianResponse: 149.5
-    onDOMReadyTime: 309.0
-    windowOnLoadTime: 1222.0
+    biggestResponse: 171492.0
+    fastestResponse: 21.0
+    slowestResponse: 1103.0
+    medianResponse: 222.0
+    onDOMReadyTime: 191.0
+    windowOnLoadTime: 1566.0
 paths:
   phantomjs: /usr/local/bin/phantomjs
   node: /usr/bin/node
