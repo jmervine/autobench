@@ -12,7 +12,7 @@ describe "when I run autobench" do
 	describe "render" do
 		it "passes thresholds" do
       @autobench.render.benchmark
-      @autobench.render.failures.should.equal "none"
+      @autobench.render.failures.should == "none"
 
       # note:
       # 
@@ -25,14 +25,14 @@ describe "when I run autobench" do
 	describe "client" do
 		it "passes thresholds" do
       @autobench.client.benchmark
-      @autobench.client.failures.should.equal "none"
+      @autobench.client.failures.should == "none"
 		end
 	end
 
 	describe "yslow" do
 		it "passes thresholds" do
       @autobench.yslow.benchmark
-      @autobench.yslow.failures.should.equal "none"
+      @autobench.yslow.failures.should == "none"
 		end
 	end
 end
