@@ -12,6 +12,11 @@ test/functional:
 	bundle exec ./tests/functional/autobench_test.sh
 	bundle exec ./tests/functional/autobenchconfig_test.sh
 
+test/examples:
+	-bundle exec ruby -Ilib ./examples/minitest.rb
+	-bundle exec ruby -Ilib ./examples/minitest-spec.rb
+	-bundle exec rspec -f d -Ilib ./examples/rspec.rb
+
 test/all: test test/functional
 
 phantomas/install:

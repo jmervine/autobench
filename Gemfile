@@ -11,11 +11,6 @@ end
 group :development do
   gem "pry"
   gem "pry-doc"
-end
-
-group :examples do
-  # for testing examples
-  gem "autobench"
   gem "rspec"
 end
 

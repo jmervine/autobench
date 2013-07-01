@@ -1,9 +1,5 @@
 class Autobench
   module Common
-    def [](key)
-      full_results[key.to_sym]
-    end
-
     def clean_keys results, ignored
       raise "missing benchmarks" unless @full_results
       results.each_key do |key|

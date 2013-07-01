@@ -41,8 +41,12 @@ class Autobench
       @full_results
     end
 
+    def [](key)
+      full_results[key].to_f
+    end
+
     def full_results
-      return clean_keys(@full_results, %w[ command connection_times ])
+      return clean_keys(@full_results, %w[ command connection_times net_io_bps ])
     end
 
     private

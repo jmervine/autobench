@@ -10,7 +10,11 @@ describe "when I run autobench" do
     it "passes thresholds" do
       @autobench.render.benchmark
       assert @autobench.render.passed?,
-          "Passed:\n#{@autobench.render.successes}\nFailed:\n#{@autobench.render.failures}"
+        "Passed:\n#{@autobench.render.successes}\nFailed:\n#{@autobench.render.failures}"
+
+      # OR test something not mentioned in the thresholds list
+      # of your config.
+      assert @autobench.render['connection_time_85_pct'] < 500
     end
   end
 
@@ -19,6 +23,11 @@ describe "when I run autobench" do
       @autobench.client.benchmark
       assert @autobench.client.passed?,
           "Passed:\n#{@autobench.client.successes}\nFailed:\n#{@autobench.client.failures}"
+
+      # OR test something not mentioned in the thresholds list
+      # of your config.
+      assert @autobench.client["redirects"] <= 3
+      assert @autobench.client["ajaxRequests"] <= 2
     end
   end
 

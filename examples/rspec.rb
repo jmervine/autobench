@@ -12,12 +12,19 @@ describe "when I run autobench" do
   describe "render" do
     it "passes thresholds" do
       @autobench.render.benchmark
+
+      # prints failures list generated based on thresholds
+      # configuration while running #benchmark
       @autobench.render.failures.should == "none"
 
       # note:
       #
       # testing "failures" over "passed?" because it will
       # provide more verbose output on what went wrong
+
+      # OR test something not mentioned in the thresholds list
+      # of your config.
+      @autobench.render["connection_time_85_pct"].should be < 500
 
     end
   end
@@ -26,6 +33,10 @@ describe "when I run autobench" do
     it "passes thresholds" do
       @autobench.client.benchmark
       @autobench.client.failures.should == "none"
+
+      @autobench.client["redirects"].should be <= 3
+      @autobench.client["ajaxRequests"].should be <= 2
+
     end
   end
 
@@ -36,3 +47,5 @@ describe "when I run autobench" do
     end
   end
 end
+
+# vim: ft=ruby:
