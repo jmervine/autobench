@@ -1,3 +1,3 @@
 class Autobench
-  VERSION = '0.0.1alpha4'
+  VERSION = '0.0.1alpha5'
 end

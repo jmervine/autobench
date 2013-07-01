@@ -4,6 +4,7 @@ class Autobench
     def initialize config
       @config       = config
       @thresholds   = @config["thresholds"]["client"] rescue []
+      @thresholds   = [] if @thresholds.nil?
       @full_results = []
       @failures     = []
       @successes    = []
@@ -21,8 +22,7 @@ class Autobench
         end
         @full_results
       rescue
-        puts "COMMAND FAILED: #{command}"
-        raise
+        raise "COMMAND FAILED: #{command}"
       end
     end
 

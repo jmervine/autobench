@@ -3,8 +3,8 @@ require "autobench"
 
 class TestAutobenchClient < Minitest::Test
 
-  def new_client overides={}
-    Autobench::Client.new(Autobench::Config.new("./config/config.yml", @options.merge(overides)))
+  def new_client overides={}, config="./config/config.yml"
+    Autobench::Client.new(Autobench::Config.new(config, @options.merge(overides)))
   end
 
   def setup
@@ -48,6 +48,9 @@ class TestAutobenchClient < Minitest::Test
 
   def test_benchmark
     assert_equal Array, @client.benchmark.class
+
+    min_client = new_client({}, "./config/min.yml")
+    assert min_client.benchmark
   end
 
   def test_passed?
