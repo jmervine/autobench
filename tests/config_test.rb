@@ -6,6 +6,8 @@ class TestAutobenchConfig < Minitest::Test
     assert Autobench::Config.new("./config/config.yml")
     assert Autobench::Config.new("./config/config.yml", { "server" => "localhost", "uri" => "/"})
     assert Autobench::Config.new("./config/config.yml", { "server" => "localhost", "uri" => "/"}).instance_variable_get(:@config)
+
+    assert_equal 80, Autobench::Config.new({"server"=>"localhost", "uri"=>"/"}).instance_variable_get(:@config)["port"]
   end
 
   def test_config

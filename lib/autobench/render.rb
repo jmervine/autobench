@@ -59,7 +59,7 @@ class Autobench
       end
 
       # all required
-      %w{ server port uri }.each do |key|
+      %w{ server uri }.each do |key|
         raise "Autobench::Render missing `#{key}`." unless config.has_key?(key)
         @httperf_config[key] = config[key]
       end

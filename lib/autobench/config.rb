@@ -13,6 +13,8 @@ class Autobench
                 else
                   raise "invalid config"
                 end
+
+      @config["port"] ||= 80
     end
 
     def phantomas
@@ -23,7 +25,7 @@ class Autobench
       rescue NoMethodError
         return default
       end
-   end
+    end
 
     def yslow
       default = ::Autobench::LIB_DIR
