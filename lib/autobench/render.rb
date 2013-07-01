@@ -6,6 +6,7 @@ class Autobench
     def initialize config
       @config     = config
       @thresholds = config["thresholds"]["render"] rescue []
+      @thresholds = [] if @thresholds.nil?
       @failures   = []
       @successes  = []
       setup_httperf_configuration(config)

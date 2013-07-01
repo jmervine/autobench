@@ -11,8 +11,8 @@ end
 
 class TestAutobenchRender < Minitest::Test
 
-  def new_render overides={}
-    Autobench::Render.new( Autobench::Config.new( "./config/config.yml", @options.merge(overides)))
+  def new_render overides={}, config="./config/config.yml"
+    Autobench::Render.new(Autobench::Config.new(config, @options.merge(overides)))
   end
 
   def setup
@@ -26,6 +26,9 @@ class TestAutobenchRender < Minitest::Test
       "render should have httperf_config"
     assert @render.instance_variable_get(:@thresholds),
       "render should have thresholds"
+
+    min_render = new_render({}, "./config/min.yml")
+    assert min_render.benchmark
   end
 
   def test_benchmark

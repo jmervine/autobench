@@ -3,8 +3,8 @@ require "autobench"
 
 class TestAutobenchYSlow < Minitest::Test
 
-  def new_yslow overides={}
-    Autobench::YSlow.new(Autobench::Config.new("./config/config.yml", @options.merge(overides)))
+  def new_yslow overides={}, config="./config/config.yml"
+    Autobench::YSlow.new(Autobench::Config.new(config, @options.merge(overides)))
   end
 
   def setup
@@ -18,6 +18,9 @@ class TestAutobenchYSlow < Minitest::Test
       "yslow should be"
     assert @yslow.instance_variable_get(:@config),
       "yslow should have config"
+
+    min_yslow = new_yslow({}, "./config/min.yml")
+    assert min_yslow.benchmark
   end
 
   def options

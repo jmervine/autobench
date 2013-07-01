@@ -6,6 +6,7 @@ class Autobench
     def initialize config
       @config     = config
       @thresholds = config["thresholds"]["yslow"] rescue []
+      @thresholds = [] if @thresholds.nil?
       @failures   = []
       @successes  = []
     end
