@@ -22,8 +22,13 @@ class TestAutobenchRender < Minitest::Test
 
   def test_initialize
     assert @render, "render should be"
+
     assert @render.instance_variable_get(:@httperf_config),
       "render should have httperf_config"
+
+    assert_equal "'/'", @render.instance_variable_get(:@httperf_config)["uri"],
+      "httperf_config uri should be quoted"
+
     assert @render.instance_variable_get(:@thresholds),
       "render should have thresholds"
 

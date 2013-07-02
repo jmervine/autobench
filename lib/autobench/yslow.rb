@@ -57,7 +57,7 @@ class Autobench
 
     private
     def command
-      "cd #{@config.yslow} && #{@config.phantomjs} ./yslow.js --info basic #{options} http://#{@config['server']}#{(@config.has_key?("port") ? ":#{@config['port']}" : "")}#{@config['uri']}"
+      "cd #{@config.yslow} && #{@config.phantomjs} ./yslow.js --info basic #{options} 'http://#{@config['server']}#{((@config.has_key?("port") && @config["port"] != 80) ? ":#{@config['port']}" : "")}#{@config['uri']}'"
     end
 
     def options

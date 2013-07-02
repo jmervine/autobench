@@ -69,6 +69,8 @@ class Autobench
         @httperf_config["num-conns"] = config["runs"]
       end
 
+      @httperf_config['uri'] = "'#{@httperf_config['uri']}'"
+
       @httperf_config.merge!(httperf_forced_options)
     end
 

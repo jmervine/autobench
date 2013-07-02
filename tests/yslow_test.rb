@@ -8,6 +8,8 @@ class TestAutobenchYSlow < Minitest::Test
   end
 
   def setup
+    @rootdir   ||= File.expand_path("..", File.dirname(__FILE__))
+    @yslowjs   ||= File.expand_path(File.join(@rootdir, "lib"))
     @phantomjs ||= File.expand_path(File.join(::Autobench::LIB_DIR, "..", "tests", "support", "phantomjs"))
     @options   ||= { "server" => "localhost", "paths" => { "phantomjs" => @phantomjs }}
     @yslow       = new_yslow
@@ -30,16 +32,15 @@ class TestAutobenchYSlow < Minitest::Test
       new_yslow({"yslow" => {"info" => "all"}}).send(:options)
   end
 
-  def yslow_command
-    assert_equal "./lib/yslow.js  http://localhost:80/",
-      @yslow.send(:yslow_command)
+  def test_command
+    assert_equal "cd #{@yslowjs} && #{@phantomjs} ./yslow.js --info basic  'http://localhost/'",
+      @yslow.send(:command)
 
-    assert_equal "./lib/yslow.js --info all --ua foobar http://localhost:80/foobar",
+    assert_equal "cd #{@yslowjs} && #{@phantomjs} ./yslow.js --info basic --ua foobar 'http://localhost/foobar'",
       new_yslow({"uri"   => "/foobar",
                  "yslow" => {
-                   "info"  => "all",
                    "ua"    => "foobar"}}
-               ).send(:yslow_command)
+               ).send(:command)
   end
 
   def test_benchmark

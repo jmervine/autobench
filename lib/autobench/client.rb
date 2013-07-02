@@ -51,7 +51,7 @@ class Autobench
 
     private
     def command
-      "cd #{@config.phantomas} && #{@config.node} ./run-multiple.js #{modules} --url=#{url} --runs=#{@config["runs"]} --format=json"
+      "cd #{@config.phantomas} && #{@config.node} ./run-multiple.js #{modules} --url='#{url}' --runs=#{@config["runs"]} --format=json"
     end
 
     def url

@@ -9,7 +9,7 @@ class TestAutobenchClient < Minitest::Test
 
   def setup
     @rootdir   ||= File.expand_path("..", File.dirname(__FILE__))
-    @phantomas ||= File.expand_path(File.join(@rootdir, "lib"))
+    @phantomas ||= File.expand_path(File.join(@rootdir, "lib", "phantomas"))
     @node      ||= File.expand_path(File.join(@rootdir, "tests", "support", "node"))
 
     @options   ||= {
@@ -38,11 +38,11 @@ class TestAutobenchClient < Minitest::Test
   def test_command
     pmods = { "phantomas" => { "modules" => [ "foobar", "bahboo", "bing" ]}}
 
-    assert_equal "cd #{@phantomas} && #{@node} ./run-multiple.js --modules=foobar,bahboo,bing --url=http://mervine.net/ --runs=9 --format=json",
+    assert_equal "cd #{@phantomas} && #{@node} ./run-multiple.js --modules=foobar,bahboo,bing --url='http://mervine.net/' --runs=9 --format=json",
       new_client(pmods).send(:command)
 
     pmods = pmods.merge("uri" => "/foobar", "port" => 8080, "runs" => 5)
-    assert_equal "cd #{@phantomas} && #{@node} ./run-multiple.js --modules=foobar,bahboo,bing --url=http://mervine.net:8080/foobar --runs=5 --format=json",
+    assert_equal "cd #{@phantomas} && #{@node} ./run-multiple.js --modules=foobar,bahboo,bing --url='http://mervine.net:8080/foobar' --runs=5 --format=json",
       new_client(pmods).send(:command)
   end
 
