@@ -24,7 +24,7 @@ For sample configurations, see: [github.com/jmervine/autobench/tree/master/confi
 
 ### Why Alpha
 
-Mostly because I haven't use this in thre real world yet. I don't like to final release [my gems](/gems)
+Mostly because I haven't use this in thre real world yet. I don't like to final release [my gems](http://mervine.net/gems)
 until I've had a change to fully vet them in real world senarios. Additionally, I have some additional
 features in mind, like being able to pass a padding value in to `autobench-config` to pad thresholds by
 a percentage and perhaps allowing `autobench` to take a run only flag for benchmarks.
@@ -75,7 +75,7 @@ See: [phantomjs.org](http://phantomjs.org/).
 
 #### NodeJS
 
-See: [Installing Node.js from Source](/notes/installing-nodejs-from-source) or [nodejs.org](http://nodejs.org/).
+See: [Installing Node.js from Source](http://mervine.net/notes/installing-nodejs-from-source) or [nodejs.org](http://nodejs.org/).
 
 ## Usage
 
