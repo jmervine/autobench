@@ -5,7 +5,7 @@
 Autobench, as follow up to [Autoperf](http://mervine.net/gems/autoperf), was created to allow for benchmarking web pages
 in three different ways.
 
-1. Render Metrics -- using [`httperf`](http://mervine.net/httperf] and [`HTTPerf.rb`](http://mervine.net/gems/httperfrb], it
+1. Render Metrics -- using [`httperf`](http://mervine.net/httperf) and [`HTTPerf.rb`](http://mervine.net/gems/httperfrb], it
    grabs a snapshot of how long it takes to access, (server side) render and download your page. You can set thresholds
    in your configuration for almost all of httperf's output. Additionally, if you use
    [my version of httperf](http://mervine.net/httperf-0-9-1-with-individual-connection-times) you'll get percentile
