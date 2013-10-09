@@ -84,6 +84,6 @@ function run_tests {
 ################################################################################
 }
 
-source ./tests/support/functional_helper.sh
+source ./tests/support/CLIunit.sh
 
 # vim: ft=sh:
