@@ -9,8 +9,8 @@ test:
 	bundle exec rake test
 
 test/functional:
-	bundle exec ./tests/functional/autobench_test.sh
-	bundle exec ./tests/functional/autobenchconfig_test.sh
+	bundle exec ./tests/support/shunt.sh --verbose ./tests/functional/autobench_test.sh
+	bundle exec ./tests/support/shunt.sh --verbose ./tests/functional/autobenchconfig_test.sh
 
 test/examples:
 	-bundle exec ruby -Ilib ./examples/minitest.rb
